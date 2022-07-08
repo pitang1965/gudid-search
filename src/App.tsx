@@ -43,7 +43,7 @@ function App() {
           (prev: Udi[], current: any) => [
             ...prev,
             {
-              id: current.id,
+              id: current.identifiers[0].id,
               brandName: current.brand_name,
               productCode: current.product_codes[0].code,
               productName: current.product_codes[0].name,
