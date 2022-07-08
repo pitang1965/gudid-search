@@ -17,6 +17,7 @@ export type Udi = {
 };
 
 export type Props = {
+  className: string;
   data: Udi[];
 };
 
@@ -52,7 +53,7 @@ const columns: ColumnDef<Udi>[] = [
   },
 ];
 
-export default function UdiTable({ data }: Props) {
+export default function UdiTable({ className, data }: Props) {
   const table = useReactTable({
     data,
     columns,
@@ -60,7 +61,7 @@ export default function UdiTable({ data }: Props) {
   });
 
   return (
-    <div className="p-2">
+    <div className={className}>
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (

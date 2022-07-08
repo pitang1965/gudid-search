@@ -25,20 +25,20 @@ function App() {
     if (limit < total) {
       alert(`${total}件のうち、先頭の${limit}件だけを読み込みます。`);
     }
-  }
+  };
 
   const handleSearch = () => {
     const url = `https://api.fda.gov/device/udi.json?api_key=${apiKey}&search=company_name:"${companyName}"&limit=${limit}`;
 
     fetch(url)
       .then((response) => {
-        if(!response.ok) {
+        if (!response.ok) {
           alert('検索できませんでした。');
         }
-        return (response.json());
+        return response.json();
       })
       .then((data: any) => {
-        checkLimit (data.meta.results.limit, data.meta.results.total);
+        checkLimit(data.meta.results.limit, data.meta.results.total);
         const udiArray: Udi[] = data.results.reduce(
           (prev: Udi[], current: any) => [
             ...prev,
@@ -60,20 +60,20 @@ function App() {
 
   return (
     <div className="App">
-      <h1>企業で検索</h1>
-      <label htmlFor="company-name">企業名:</label>
-      <input
-        type="text"
-        id="company-name"
-        value={companyName}
-        onChange={(e) => setCompanyName(e.target.value)}
-      />
-      <div className="card">
+      <h1>GUDID検索</h1>
+      <div className="search-box">
+        <label htmlFor="company-name">企業名：</label>
+        <input
+          type="text"
+          id="company-name"
+          value={companyName}
+          onChange={(e) => setCompanyName(e.target.value)}
+        />
         <button className="button" onClick={handleSearch}>
           検索
         </button>
       </div>
-      <UdiTable data={results} />
+      <UdiTable className="mt-2" data={results} />
       <p className="read-the-docs">
         APIドキュメントは<a href="https://open.fda.gov/apis/">こちら</a>
       </p>
