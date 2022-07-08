@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UdiTable from './UdiTable';
 import './App.css';
 import type { Udi } from './UdiTable';
@@ -15,6 +15,18 @@ function App() {
   const [results, setResults] = useState<Udi[]>([]);
   const [companyName, setCompanyName] = useState('JEOL');
 
+  useEffect(() => {
+    if (companyName !== '') {
+      handleSearch();
+    }
+  }, []);
+
+  const checkLimit = (limit: number, total: number) => {
+    if (limit < total) {
+      alert(`${total}件のうち、先頭の${limit}件だけを読み込みます。`);
+    }
+  }
+
   const handleSearch = () => {
     const url = `https://api.fda.gov/device/udi.json?api_key=${apiKey}&search=company_name:"${companyName}"&limit=${limit}`;
 
@@ -26,6 +38,7 @@ function App() {
         return (response.json());
       })
       .then((data: any) => {
+        checkLimit (data.meta.results.limit, data.meta.results.total);
         const udiArray: Udi[] = data.results.reduce(
           (prev: Udi[], current: any) => [
             ...prev,
