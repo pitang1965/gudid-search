@@ -1,10 +1,10 @@
-import React from 'react';
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import Link from './Link';
 import './App.css';
 
 export type Udi = {
@@ -25,6 +25,7 @@ const columns: ColumnDef<Udi>[] = [
   {
     accessorKey: 'id',
     header: () => 'UDI-DI',
+    cell: props => <Link to={`https://accessgudid.nlm.nih.gov/devices/${props.renderValue()}`}>{props.renderValue()}</Link>,
   },
   {
     accessorKey: 'brandName',
