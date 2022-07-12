@@ -100,7 +100,7 @@ export default function UdiTable({ className, data }: Props) {
           ))}
         </tbody>
       </table>
-      <button className="button" onClick={xport}>EXLSXエクスポート</button>
+      <button className="button mt-2" onClick={xport}>EXLSXエクスポート</button>
     </div>
   );
 }
