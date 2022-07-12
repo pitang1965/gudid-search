@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import * as XLSX from 'xlsx';
 import {
   ColumnDef,
   flexRender,
@@ -66,7 +67,7 @@ export default function UdiTable({ className, data }: Props) {
     const table = document.getElementById('TableToExport');
     const wb = XLSX.utils.table_to_book(table);
     XLSX.writeFile(wb, 'UdiTable.xlsx');
-  });
+  }, []);
 
   return (
     <div className={className}>
