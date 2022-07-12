@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   ColumnDef,
   flexRender,
@@ -61,9 +62,15 @@ export default function UdiTable({ className, data }: Props) {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const xport = useCallback(async () => {
+    const table = document.getElementById('TableToExport');
+    const wb = XLSX.utils.table_to_book(table);
+    XLSX.writeFile(wb, 'UdiTable.xlsx');
+  });
+
   return (
     <div className={className}>
-      <table>
+      <table id='TableToExport'>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -92,6 +99,7 @@ export default function UdiTable({ className, data }: Props) {
           ))}
         </tbody>
       </table>
+      <button className="button" onClick={xport}>EXLSXエクスポート</button>
     </div>
   );
 }
