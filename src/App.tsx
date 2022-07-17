@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import UdiTable from './UdiTable';
+import { Loading } from './Loading';
 import './App.css';
 import type { Udi } from './UdiTable';
 
@@ -14,6 +15,7 @@ const limit = 100;
 function App() {
   const [results, setResults] = useState<Udi[]>([]);
   const [companyName, setCompanyName] = useState('JEOL');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (companyName !== '') {
@@ -28,6 +30,8 @@ function App() {
   };
 
   const handleSearch = () => {
+    setIsLoading(true);
+
     const url = `https://api.fda.gov/device/udi.json?api_key=${apiKey}&search=company_name:"${companyName}"&limit=${limit}`;
 
     fetch(url)
@@ -54,28 +58,34 @@ function App() {
           []
         );
         setResults([...udiArray]);
+
+        setIsLoading(false);
       })
       .catch((error) => console.error(error));
   };
 
   return (
-    <div className="App">
+    <div className='App'>
       <h1>GUDID検索</h1>
-      <div className="search-box">
-        <label htmlFor="company-name">企業名：</label>
+      <div className='search-box'>
+        <label htmlFor='company-name'>企業名：</label>
         <input
-          type="text"
-          id="company-name"
+          type='text'
+          id='company-name'
           value={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
         />
-        <button className="button" onClick={handleSearch}>
+        <button className='button' onClick={handleSearch}>
           検索
         </button>
       </div>
-      <UdiTable className="mt-2" data={results} />
-      <p className="read-the-docs">
-        APIドキュメントは<a href="https://open.fda.gov/apis/">こちら</a>
+      {isLoading ? (
+        <Loading color={'yellow'} width={48} height={48} dur={'1.5s'} />
+      ) : (
+        <UdiTable className='mt-2' data={results} />
+      )}
+      <p className='read-the-docs'>
+        APIドキュメントは<a href='https://open.fda.gov/apis/'>こちら</a>
       </p>
     </div>
   );
